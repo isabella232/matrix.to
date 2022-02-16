@@ -1,0 +1,37 @@
+# Create a release when a tag is pushed
+name: Create a release
+
+on:
+  # Allow manual trigger from the Actions tab:
+  # https://github.com/Automattic/matrix.to/actions/workflows/release.yml
+  workflow_dispatch:
+
+  push:
+    tags: ['*']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build
+        run: yarn build
+
+      - name: Rename build directory
+        run: mv build a8c-matrix-to-${{ github.ref_name }}
+
+      - name: Create archive
+        run: tar -cvzf a8c-matrix-to-${{ github.ref_name }}.tar.gz a8c-matrix-to-${{ github.ref_name }}
+
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+          artifacts: "a8c-matrix-to-${{ github.ref_name }}.tar.gz"
