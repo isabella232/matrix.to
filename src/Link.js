@@ -113,6 +113,21 @@ export class Link {
         linkStr = linkStr.substr(2);
         const [identifier, eventId] = linkStr.split("/");
 
+        let setQueryParamIfNotSet = (queryString, key, value) => {
+            if (queryString === undefined) {
+                queryString = '';
+            }
+            if (queryString.toLowerCase().indexOf(key) === -1) {
+                if (queryString !== '') {
+                    queryString += '&';
+                }
+                queryString += `${key}=${value}`;
+            }
+            return queryString;
+        };
+
+        queryParamsStr = setQueryParamIfNotSet(queryParamsStr, 'web-instance[element.io]', 'chat.a8c.com');
+
         let viaServers = [];
         let clientId = null;
         let webInstances = {};
