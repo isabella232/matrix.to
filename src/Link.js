@@ -127,6 +127,7 @@ export class Link {
         };
 
         queryParamsStr = setQueryParamIfNotSet(queryParamsStr, 'web-instance[element.io]', 'chat.a8c.com');
+        queryParamsStr = setQueryParamIfNotSet(queryParamsStr, 'client', 'element.io');
 
         let viaServers = [];
         let clientId = null;
