@@ -28,11 +28,16 @@ export async function main(container) {
         preferences: new Preferences(window.localStorage),
         origin: location.origin,
     });
-    vm.updateHash(decodeURIComponent(location.hash));
+
+
+    // Support Element URLs, which have an extra '/room'
+    let hash = location.hash.replace('#/room/', '#/');
+
+    vm.updateHash(decodeURIComponent(hash));
     window.__rootvm = vm;
     const view = new RootView(vm);
     container.appendChild(view.mount());
     window.addEventListener('hashchange', () => {
-        vm.updateHash(decodeURIComponent(location.hash));
+        vm.updateHash(decodeURIComponent(hash));
     });
 }
